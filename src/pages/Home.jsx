@@ -6,6 +6,7 @@ import NavBar from '../components/NavBar/NavBar';
 import PortfolioGrid from '../components/Card/PortfolioGrid';
 import MessageModal from '../components/UI/MessageModal';
 import usePortfolio from '../hooks/usePortfolio';
+import useProfile from '../hooks/useProfile';
 import { useAuth } from '../hooks/useAuth';
 import styles from './Home.module.css';
 
@@ -14,7 +15,8 @@ const Home = () => {
   const [search, setSearch] = useState('');
   const [messageOpen, setMessageOpen] = useState(false);
   const { isAuthenticated, logout } = useAuth();
-  const { items, loading, error, likeItem, deleteItem, refetch } = usePortfolio(activeTab, search);
+  const { items, loading, error, likeItem, deleteItem } = usePortfolio(activeTab, search);
+  const { profile } = useProfile();
 
   const counts = useMemo(() => {
     const base = { All: items.length };
@@ -27,7 +29,7 @@ const Home = () => {
   return (
     <div className={styles.page}>
       <Toaster position="top-right" toastOptions={{ style: { background: '#0f1521', color: '#e8edf5', border: '1px solid rgba(255,255,255,0.08)' } }} />
-      <Header onSearch={setSearch} onMessageClick={() => setMessageOpen(true)} />
+      <Header profile={profile} onSearch={setSearch} onMessageClick={() => setMessageOpen(true)} />
       <NavBar activeTab={activeTab} onTabChange={setActiveTab} counts={counts} />
 
       <main className={styles.main}>
@@ -68,10 +70,10 @@ const Home = () => {
       </main>
 
       <footer className={styles.footer}>
-        <p>© 2025 K. Srimaan Kameshwar · Built with React & Node.js</p>
+        <p>© 2025 {profile?.name || ''} · Built with React & Node.js</p>
       </footer>
 
-      <MessageModal isOpen={messageOpen} onClose={() => setMessageOpen(false)} />
+      <MessageModal isOpen={messageOpen} onClose={() => setMessageOpen(false)} profile={profile} />
     </div>
   );
 };

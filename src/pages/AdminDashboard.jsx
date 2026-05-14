@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { motion } from 'framer-motion';
 import UploadForm from '../components/Admin/UploadForm';
+import ProfileEditor from '../components/Admin/ProfileEditor';
 import usePortfolio from '../hooks/usePortfolio';
+import useProfile from '../hooks/useProfile';
 import { useAuth } from '../hooks/useAuth';
 import styles from './AdminDashboard.module.css';
 
@@ -14,8 +17,10 @@ const StatCard = ({ label, value, color }) => (
 );
 
 const AdminDashboard = () => {
+  const [activeTab, setActiveTab] = useState('upload');
   const { logout } = useAuth();
   const { items, loading, refetch, deleteItem } = usePortfolio();
+  const { profile, updateProfile } = useProfile();
 
   const stats = {
     total: items.length,
@@ -62,10 +67,33 @@ const AdminDashboard = () => {
             <StatCard label="Certifications" value={stats.certifications} color="var(--accent-amber)" />
           </div>
 
+          <div className={styles.tabBar}>
+            <button
+              className={`${styles.tabBtn} ${activeTab === 'upload' ? styles.tabActive : ''}`}
+              onClick={() => setActiveTab('upload')}
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
+              Add Portfolio Item
+            </button>
+            <button
+              className={`${styles.tabBtn} ${activeTab === 'profile' ? styles.tabActive : ''}`}
+              onClick={() => setActiveTab('profile')}
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
+              </svg>
+              Edit Profile
+            </button>
+          </div>
+
           <div className={styles.layout}>
             <div className={styles.formCol}>
-              <UploadForm onSuccess={refetch} />
+              {activeTab === 'upload' && <UploadForm onSuccess={refetch} />}
+              {activeTab === 'profile' && <ProfileEditor profile={profile} onUpdate={updateProfile} />}
             </div>
+
             <div className={styles.listCol}>
               <div className={styles.listHeader}>
                 <h2 className={styles.listTitle}>Existing Items</h2>

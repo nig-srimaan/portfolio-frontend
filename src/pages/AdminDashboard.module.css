@@ -141,6 +141,42 @@
   font-family: var(--font-display);
 }
 
+.tabBar {
+  display: flex;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 6px;
+  width: fit-content;
+}
+
+.tabBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+  transition: var(--transition);
+  background: transparent;
+}
+
+.tabBtn:hover {
+  color: var(--text-secondary);
+  background: var(--bg-secondary);
+}
+
+.tabActive {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-bright);
+}
+
 .layout {
   display: grid;
   grid-template-columns: 1fr 380px;

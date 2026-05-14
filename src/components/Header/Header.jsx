@@ -2,16 +2,12 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './Header.module.css';
 
-const domains = ['Java', 'Python', 'Systems Programming', 'Web Dev', 'DSA'];
-
 const SearchBar = ({ onSearch, onClose }) => {
   const [value, setValue] = useState('');
-
   const handleChange = (e) => {
     setValue(e.target.value);
     onSearch(e.target.value);
   };
-
   return (
     <motion.div
       className={styles.searchOverlay}
@@ -37,13 +33,17 @@ const SearchBar = ({ onSearch, onClose }) => {
   );
 };
 
-const Header = ({ onSearch, onMessageClick }) => {
+const Header = ({ profile, onSearch, onMessageClick }) => {
   const [searchOpen, setSearchOpen] = useState(false);
 
   const handleClose = () => {
     setSearchOpen(false);
     onSearch('');
   };
+
+  const initials = profile?.name
+    ? profile.name.split(' ').map((w) => w[0]).join('').slice(0, 3).toUpperCase()
+    : '...';
 
   return (
     <header className={styles.header}>
@@ -57,7 +57,11 @@ const Header = ({ onSearch, onMessageClick }) => {
           >
             <div className={styles.avatarRing} />
             <div className={styles.avatar}>
-              <span className={styles.avatarInitials}>KSK</span>
+              {profile?.avatarUrl ? (
+                <img src={profile.avatarUrl} alt={profile.name} className={styles.avatarImg} />
+              ) : (
+                <span className={styles.avatarInitials}>{initials}</span>
+              )}
             </div>
             <div className={styles.statusDot} />
           </motion.div>
@@ -68,21 +72,25 @@ const Header = ({ onSearch, onMessageClick }) => {
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <h1 className={styles.name}>K. Srimaan Kameshwar</h1>
-            <p className={styles.subtitle}>Computer Science Student · Aspiring SDE</p>
-            <div className={styles.domains}>
-              {domains.map((d, i) => (
-                <motion.span
-                  key={d}
-                  className={styles.domainTag}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.2 + i * 0.05 }}
-                >
-                  {d}
-                </motion.span>
-              ))}
-            </div>
+            <h1 className={styles.name}>{profile?.name || 'Loading...'}</h1>
+            {profile?.subtitle && (
+              <p className={styles.subtitle}>{profile.subtitle}</p>
+            )}
+            {profile?.domains?.length > 0 && (
+              <div className={styles.domains}>
+                {profile.domains.map((d, i) => (
+                  <motion.span
+                    key={d}
+                    className={styles.domainTag}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.2 + i * 0.05 }}
+                  >
+                    {d}
+                  </motion.span>
+                ))}
+              </div>
+            )}
           </motion.div>
         </div>
 
@@ -92,11 +100,7 @@ const Header = ({ onSearch, onMessageClick }) => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <button
-            className={styles.iconBtn}
-            onClick={() => setSearchOpen(true)}
-            aria-label="Search"
-          >
+          <button className={styles.iconBtn} onClick={() => setSearchOpen(true)} aria-label="Search">
             <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="11" cy="11" r="8" />
               <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -112,9 +116,7 @@ const Header = ({ onSearch, onMessageClick }) => {
       </div>
 
       <AnimatePresence>
-        {searchOpen && (
-          <SearchBar onSearch={onSearch} onClose={handleClose} />
-        )}
+        {searchOpen && <SearchBar onSearch={onSearch} onClose={handleClose} />}
       </AnimatePresence>
     </header>
   );
