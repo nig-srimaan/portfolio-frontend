@@ -23,12 +23,13 @@ const ProjectDetailModal = ({ item, isOpen, onClose }) => {
             onClick={onClose}
           />
           <motion.div
-            className={styles.modal}
-            initial={{ opacity: 0, scale: 0.94, y: 24 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.94, y: 24 }}
-            transition={{ type: 'spring', stiffness: 380, damping: 32 }}
-          >
+  className={styles.modal}
+  initial={{ opacity: 0, scale: 0.94 }}
+  animate={{ opacity: 1, scale: 1 }}
+  exit={{ opacity: 0, scale: 0.94 }}
+  transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+  style={{ x: '-50%', y: '-50%' }}
+>
             <button className={styles.closeBtn} onClick={onClose}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <line x1="18" y1="6" x2="6" y2="18" />
