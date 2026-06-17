@@ -5,6 +5,7 @@ import Header from '../components/Header/Header';
 import NavBar from '../components/NavBar/NavBar';
 import PortfolioGrid from '../components/Card/PortfolioGrid';
 import MessageModal from '../components/UI/MessageModal';
+import ProjectDetailModal from '../components/Card/ProjectDetailModal';
 import usePortfolio from '../hooks/usePortfolio';
 import useProfile from '../hooks/useProfile';
 import { useAuth } from '../hooks/useAuth';
@@ -14,6 +15,7 @@ const Home = () => {
   const [activeTab, setActiveTab] = useState('All');
   const [search, setSearch] = useState('');
   const [messageOpen, setMessageOpen] = useState(false);
+  const [detailItem, setDetailItem] = useState(null);
   const { isAuthenticated, logout } = useAuth();
   const { items, loading, error, likeItem, deleteItem } = usePortfolio(activeTab, search);
   const { profile } = useProfile();
@@ -62,6 +64,7 @@ const Home = () => {
             error={error}
             onLike={likeItem}
             onDelete={deleteItem}
+            onOpenDetail={setDetailItem}
             isAdmin={isAuthenticated}
             search={search}
             category={activeTab}
@@ -74,6 +77,7 @@ const Home = () => {
       </footer>
 
       <MessageModal isOpen={messageOpen} onClose={() => setMessageOpen(false)} profile={profile} />
+      <ProjectDetailModal item={detailItem} isOpen={!!detailItem} onClose={() => setDetailItem(null)} />
     </div>
   );
 };
