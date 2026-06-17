@@ -15,11 +15,12 @@
   background: var(--bg-card);
   border: 1px solid var(--border-bright);
   border-radius: var(--radius-xl);
-  width: 100%;
+  width: calc(100% - 48px);
   max-width: 640px;
   max-height: 85vh;
   overflow-y: auto;
   box-shadow: 0 32px 100px rgba(0, 0, 0, 0.7);
+  margin: 0 auto;
 }
 
 .closeBtn {
