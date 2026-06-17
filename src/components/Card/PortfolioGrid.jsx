@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import PortfolioCard from '../Card/PortfolioCard';
+import PortfolioCard from './PortfolioCard';
 import styles from './PortfolioGrid.module.css';
 
 const SkeletonCard = () => (
@@ -39,7 +39,7 @@ const EmptyState = ({ search, category }) => (
   </motion.div>
 );
 
-const PortfolioGrid = ({ items, loading, error, onLike, onDelete, isAdmin, search, category }) => {
+const PortfolioGrid = ({ items, loading, error, onLike, onDelete, onOpenDetail, isAdmin, search, category }) => {
   if (error) {
     return (
       <div className={styles.error}>
@@ -72,6 +72,7 @@ const PortfolioGrid = ({ items, loading, error, onLike, onDelete, isAdmin, searc
             index={index}
             onLike={onLike}
             onDelete={onDelete}
+            onOpenDetail={onOpenDetail}
             isAdmin={isAdmin}
           />
         ))}
