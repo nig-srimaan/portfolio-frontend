@@ -191,7 +191,7 @@ const UploadForm = ({ onSuccess }) => {
           <line x1="12" y1="3" x2="12" y2="15" />
         </svg>
         <span>{media.length > 0 ? `${media.length} file(s) selected` : 'Upload additional media files'}</span>
-        <input ref={mediaRef} type="file" multiple accept="image/*,video/*,.pdf" onChange={handleMedia} style={{ display: 'none' }} />
+        <input ref={mediaRef} type="file" multiple onChange={handleMedia} style={{ display: 'none' }} />
       </div>
 
       <label className={styles.checkRow}>
