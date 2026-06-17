@@ -58,7 +58,7 @@ const Header = ({ profile, onSearch, onMessageClick }) => {
             <div className={styles.avatarRing} />
             <div className={styles.avatar}>
               {profile?.avatarUrl ? (
-                <img src={profile.avatarUrl} alt={profile.name} className={styles.avatarImg} />
+                <img src={`https://portfolio-backend-fhv2.onrender.com${profile.avatarUrl}`} alt={profile.name} className={styles.avatarImg} />
               ) : (
                 <span className={styles.avatarInitials}>{initials}</span>
               )}
