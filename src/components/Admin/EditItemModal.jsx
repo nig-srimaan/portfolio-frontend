@@ -106,13 +106,14 @@ const EditItemModal = ({ item, isOpen, onClose, onSuccess }) => {
             exit={{ opacity: 0 }}
             onClick={onClose}
           />
-          <motion.div
-            className={styles.modal}
-            initial={{ opacity: 0, scale: 0.94 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.94 }}
-            transition={{ type: 'spring', stiffness: 380, damping: 32 }}
-          >
+         <motion.div
+  className={styles.modal}
+  initial={{ opacity: 0, scale: 0.94 }}
+  animate={{ opacity: 1, scale: 1 }}
+  exit={{ opacity: 0, scale: 0.94 }}
+  transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+  style={{ x: '-50%', y: '-50%' }}
+>
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>Edit Item</h2>
               <button className={styles.closeBtn} onClick={onClose}>
