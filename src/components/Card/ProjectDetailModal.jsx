@@ -85,26 +85,37 @@ const ProjectDetailModal = ({ item, isOpen, onClose }) => {
               {item.mediaUrls?.length > 0 && (
                 <div className={styles.section}>
                   <h3 className={styles.sectionLabel}>Media & Files</h3>
-                  <div className={styles.mediaGrid}>
+                  <div className={styles.fileList}>
                     {item.mediaUrls.map((url, i) => {
-                      const ext = url.split('.').pop().toLowerCase();
+                      const ext = url.split('.').pop().split('?')[0].toLowerCase();
                       const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext);
                       const downloadUrl = url.replace('/upload/', '/upload/fl_attachment/');
-                      const fileName = url.split('/').pop();
+                      const rawName = url.split('/').pop().split('?')[0];
                       return (
-                        <a key={i} href={downloadUrl} target="_blank" rel="noreferrer" className={styles.mediaThumb}>
+                        <a key={i} href={downloadUrl} target="_blank" rel="noreferrer" className={styles.fileRow}>
                           {isImage ? (
-                            <img src={url} alt={`Media ${i + 1}`} />
+                            <div className={styles.fileRowThumb}>
+                              <img src={url} alt={`Media ${i + 1}`} />
+                            </div>
                           ) : (
-                            <div className={styles.fileTile}>
-                              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                            <div className={styles.fileRowIcon}>
+                              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                                 <polyline points="14 2 14 8 20 8" />
                               </svg>
-                              <span>{ext.toUpperCase()}</span>
-                              <span className={styles.fileName}>{fileName}</span>
                             </div>
                           )}
+                          <div className={styles.fileRowInfo}>
+                            <span className={styles.fileRowName}>{rawName}</span>
+                            <span className={styles.fileRowExt}>{ext.toUpperCase()}</span>
+                          </div>
+                          <div className={styles.fileRowDownload}>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                              <polyline points="7 10 12 15 17 10" />
+                              <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
+                          </div>
                         </a>
                       );
                     })}
