@@ -86,13 +86,14 @@ const ProjectDetailModal = ({ item, isOpen, onClose }) => {
                 <div className={styles.section}>
                   <h3 className={styles.sectionLabel}>Media & Files</h3>
                   <div className={styles.fileList}>
-                    {item.mediaUrls.map((url, i) => {
+                    {item.mediaUrls.map((entry, i) => {
+                      const [url, originalName] = entry.includes('||') ? entry.split('||') : [entry, entry.split('/').pop()];
                       const ext = url.split('.').pop().split('?')[0].toLowerCase();
                       const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext);
-                      const downloadUrl = url.replace('/upload/', '/upload/fl_attachment/');
-                      const rawName = url.split('/').pop().split('?')[0];
+                      const isPdf = ext === 'pdf';
+                      const finalUrl = isPdf ? url : url.replace('/upload/', '/upload/fl_attachment/');
                       return (
-                        <a key={i} href={downloadUrl} target="_blank" rel="noreferrer" className={styles.fileRow}>
+                        <a key={i} href={finalUrl} target="_blank" rel="noreferrer" className={styles.fileRow}>
                           {isImage ? (
                             <div className={styles.fileRowThumb}>
                               <img src={url} alt={`Media ${i + 1}`} />
@@ -106,7 +107,7 @@ const ProjectDetailModal = ({ item, isOpen, onClose }) => {
                             </div>
                           )}
                           <div className={styles.fileRowInfo}>
-                            <span className={styles.fileRowName}>{rawName}</span>
+                            <span className={styles.fileRowName}>{originalName}</span>
                             <span className={styles.fileRowExt}>{ext.toUpperCase()}</span>
                           </div>
                           <div className={styles.fileRowDownload}>
