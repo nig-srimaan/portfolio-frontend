@@ -23,13 +23,13 @@ const ProjectDetailModal = ({ item, isOpen, onClose }) => {
             onClick={onClose}
           />
           <motion.div
-  className={styles.modal}
-  initial={{ opacity: 0, scale: 0.94 }}
-  animate={{ opacity: 1, scale: 1 }}
-  exit={{ opacity: 0, scale: 0.94 }}
-  transition={{ type: 'spring', stiffness: 380, damping: 32 }}
-  style={{ x: '-50%', y: '-50%' }}
->
+            className={styles.modal}
+            initial={{ opacity: 0, scale: 0.94 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.94 }}
+            transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+            style={{ x: '-50%', y: '-50%' }}
+          >
             <button className={styles.closeBtn} onClick={onClose}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <line x1="18" y1="6" x2="6" y2="18" />
@@ -83,31 +83,34 @@ const ProjectDetailModal = ({ item, isOpen, onClose }) => {
               </div>
 
               {item.mediaUrls?.length > 0 && (
-  <div className={styles.section}>
-    <h3 className={styles.sectionLabel}>Media</h3>
-    <div className={styles.mediaGrid}>
-      {item.mediaUrls.map((url, i) => {
-        const isPdf = url.toLowerCase().endsWith('.pdf');
-        const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(url);
-        return (
-          <a key={i} href={url} target="_blank" rel="noreferrer" className={styles.mediaThumb}>
-            {isImage ? (
-              <img src={url} alt={`Media ${i + 1}`} />
-            ) : (
-              <div className={styles.fileTile}>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                  <polyline points="14 2 14 8 20 8" />
-                </svg>
-                <span>{isPdf ? 'PDF' : 'File'}</span>
-              </div>
-            )}
-          </a>
-        );
-      })}
-    </div>
-  </div>
-)}
+                <div className={styles.section}>
+                  <h3 className={styles.sectionLabel}>Media & Files</h3>
+                  <div className={styles.mediaGrid}>
+                    {item.mediaUrls.map((url, i) => {
+                      const ext = url.split('.').pop().toLowerCase();
+                      const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext);
+                      const downloadUrl = url.replace('/upload/', '/upload/fl_attachment/');
+                      const fileName = url.split('/').pop();
+                      return (
+                        <a key={i} href={downloadUrl} target="_blank" rel="noreferrer" className={styles.mediaThumb}>
+                          {isImage ? (
+                            <img src={url} alt={`Media ${i + 1}`} />
+                          ) : (
+                            <div className={styles.fileTile}>
+                              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                <polyline points="14 2 14 8 20 8" />
+                              </svg>
+                              <span>{ext.toUpperCase()}</span>
+                              <span className={styles.fileName}>{fileName}</span>
+                            </div>
+                          )}
+                        </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
               {(item.githubLink || item.externalLink) && (
                 <div className={styles.linksRow}>
