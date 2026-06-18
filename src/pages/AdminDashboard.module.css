@@ -289,6 +289,30 @@
   margin-top: 1px;
 }
 
+.listItemActions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.editBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-muted);
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.editBtn:hover {
+  background: rgba(0, 229, 255, 0.08);
+  color: var(--accent-cyan);
+}
+
 .listDeleteBtn {
   display: flex;
   align-items: center;
