@@ -46,16 +46,13 @@ const UploadForm = ({ onSuccess }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.title || !form.description || !form.skills || !form.whatILearned) {
-      toast.error('Please fill in all required fields.');
-      return;
-    }
-
     setSubmitting(true);
     const fd = new FormData();
     Object.entries(form).forEach(([k, v]) => fd.append(k, v));
 
-    const skillsArray = form.skills.split(',').map((s) => s.trim()).filter(Boolean);
+    const skillsArray = form.skills
+      ? form.skills.split(',').map((s) => s.trim()).filter(Boolean)
+      : [];
     fd.set('skills', JSON.stringify(skillsArray));
 
     if (thumbnail) fd.append('thumbnail', thumbnail);
@@ -109,7 +106,7 @@ const UploadForm = ({ onSuccess }) => {
 
       <div className={styles.row}>
         <div className={styles.field}>
-          <label className={styles.label}>Title <span className={styles.req}>*</span></label>
+          <label className={styles.label}>Title</label>
           <input
             name="title"
             value={form.title}
@@ -119,7 +116,7 @@ const UploadForm = ({ onSuccess }) => {
           />
         </div>
         <div className={styles.field}>
-          <label className={styles.label}>Category <span className={styles.req}>*</span></label>
+          <label className={styles.label}>Category</label>
           <select name="category" value={form.category} onChange={handleChange} className={styles.input}>
             {categories.map((c) => <option key={c} value={c}>{c}</option>)}
           </select>
@@ -127,7 +124,7 @@ const UploadForm = ({ onSuccess }) => {
       </div>
 
       <div className={styles.field}>
-        <label className={styles.label}>Description <span className={styles.req}>*</span></label>
+        <label className={styles.label}>Description</label>
         <textarea
           name="description"
           value={form.description}
@@ -139,7 +136,7 @@ const UploadForm = ({ onSuccess }) => {
       </div>
 
       <div className={styles.field}>
-        <label className={styles.label}>Skills Used <span className={styles.req}>*</span></label>
+        <label className={styles.label}>Skills Used</label>
         <input
           name="skills"
           value={form.skills}
@@ -150,7 +147,7 @@ const UploadForm = ({ onSuccess }) => {
       </div>
 
       <div className={styles.field}>
-        <label className={styles.label}>What I Learned <span className={styles.req}>*</span></label>
+        <label className={styles.label}>What I Learned</label>
         <textarea
           name="whatILearned"
           value={form.whatILearned}
