@@ -16,6 +16,7 @@ const EditItemModal = ({ item, isOpen, onClose, onSuccess }) => {
     externalLink: '',
     githubLink: '',
     featured: false,
+    currentlyWorking: false,
   });
   const [thumbnail, setThumbnail] = useState(null);
   const [thumbPreview, setThumbPreview] = useState(null);
@@ -36,6 +37,7 @@ const EditItemModal = ({ item, isOpen, onClose, onSuccess }) => {
         externalLink: item.externalLink || '',
         githubLink: item.githubLink || '',
         featured: item.featured || false,
+        currentlyWorking: item.currentlyWorking || false,
       });
       setThumbPreview(item.thumbnailUrl || null);
       setExistingMedia(item.mediaUrls || []);
@@ -78,7 +80,7 @@ const EditItemModal = ({ item, isOpen, onClose, onSuccess }) => {
     try {
       const fd = new FormData();
       Object.entries(form).forEach(([k, v]) => fd.append(k, v));
-      const skillsArray = form.skills.split(',').map((s) => s.trim()).filter(Boolean);
+      const skillsArray = form.skills ? form.skills.split(',').map((s) => s.trim()).filter(Boolean) : [];
       fd.set('skills', JSON.stringify(skillsArray));
       if (thumbnail) fd.append('thumbnail', thumbnail);
       newMedia.forEach((f) => fd.append('media', f));
@@ -106,14 +108,14 @@ const EditItemModal = ({ item, isOpen, onClose, onSuccess }) => {
             exit={{ opacity: 0 }}
             onClick={onClose}
           />
-         <motion.div
-  className={styles.modal}
-  initial={{ opacity: 0, scale: 0.94 }}
-  animate={{ opacity: 1, scale: 1 }}
-  exit={{ opacity: 0, scale: 0.94 }}
-  transition={{ type: 'spring', stiffness: 380, damping: 32 }}
-  style={{ x: '-50%', y: '-50%' }}
->
+          <motion.div
+            className={styles.modal}
+            initial={{ opacity: 0, scale: 0.94 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.94 }}
+            transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+            style={{ x: '-50%', y: '-50%' }}
+          >
             <div className={styles.modalHeader}>
               <h2 className={styles.modalTitle}>Edit Item</h2>
               <button className={styles.closeBtn} onClick={onClose}>
@@ -143,7 +145,7 @@ const EditItemModal = ({ item, isOpen, onClose, onSuccess }) => {
 
               <div className={styles.row}>
                 <div className={styles.field}>
-                  <label className={styles.label}>Title <span className={styles.req}>*</span></label>
+                  <label className={styles.label}>Title</label>
                   <input name="title" value={form.title} onChange={handleChange} className={styles.input} />
                 </div>
                 <div className={styles.field}>
@@ -154,8 +156,30 @@ const EditItemModal = ({ item, isOpen, onClose, onSuccess }) => {
                 </div>
               </div>
 
+              {form.category === 'Internships' && (
+                <div className={styles.field}>
+                  <label className={styles.label}>Currently Working Here?</label>
+                  <div className={styles.toggleRow}>
+                    <button
+                      type="button"
+                      className={`${styles.toggleBtn} ${form.currentlyWorking ? styles.toggleActive : ''}`}
+                      onClick={() => setForm((p) => ({ ...p, currentlyWorking: true }))}
+                    >
+                      Yes
+                    </button>
+                    <button
+                      type="button"
+                      className={`${styles.toggleBtn} ${!form.currentlyWorking ? styles.toggleActive : ''}`}
+                      onClick={() => setForm((p) => ({ ...p, currentlyWorking: false }))}
+                    >
+                      No
+                    </button>
+                  </div>
+                </div>
+              )}
+
               <div className={styles.field}>
-                <label className={styles.label}>Description <span className={styles.req}>*</span></label>
+                <label className={styles.label}>Description</label>
                 <textarea name="description" value={form.description} onChange={handleChange} className={styles.textarea} rows={3} />
               </div>
 
