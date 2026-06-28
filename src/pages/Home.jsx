@@ -18,15 +18,16 @@ const Home = () => {
   const [detailItem, setDetailItem] = useState(null);
   const { isAuthenticated, logout } = useAuth();
   const { items, loading, error, likeItem, deleteItem } = usePortfolio(activeTab, search);
+  const { items: allItems } = usePortfolio('All', '');
   const { profile } = useProfile();
 
   const counts = useMemo(() => {
-    const base = { All: items.length };
+    const base = { All: allItems.length };
     ['Projects', 'Internships', 'Certifications'].forEach((cat) => {
-      base[cat] = items.filter((i) => i.category === cat).length;
+      base[cat] = allItems.filter((i) => i.category === cat).length;
     });
     return base;
-  }, [items]);
+  }, [allItems]);
 
   return (
     <div className={styles.page}>
