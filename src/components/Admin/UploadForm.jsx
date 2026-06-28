@@ -15,6 +15,7 @@ const initialState = {
   externalLink: '',
   githubLink: '',
   featured: false,
+  currentlyWorking: false,
 };
 
 const UploadForm = ({ onSuccess }) => {
@@ -122,6 +123,28 @@ const UploadForm = ({ onSuccess }) => {
           </select>
         </div>
       </div>
+
+      {form.category === 'Internships' && (
+        <div className={styles.field}>
+          <label className={styles.label}>Currently Working Here?</label>
+          <div className={styles.toggleRow}>
+            <button
+              type="button"
+              className={`${styles.toggleBtn} ${form.currentlyWorking ? styles.toggleActive : ''}`}
+              onClick={() => setForm((p) => ({ ...p, currentlyWorking: true }))}
+            >
+              Yes
+            </button>
+            <button
+              type="button"
+              className={`${styles.toggleBtn} ${!form.currentlyWorking ? styles.toggleActive : ''}`}
+              onClick={() => setForm((p) => ({ ...p, currentlyWorking: false }))}
+            >
+              No
+            </button>
+          </div>
+        </div>
+      )}
 
       <div className={styles.field}>
         <label className={styles.label}>Description</label>
