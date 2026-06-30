@@ -39,7 +39,7 @@ const ProjectDetailModal = ({ item, isOpen, onClose }) => {
 
             {item.thumbnailUrl && (
               <div className={styles.heroImage}>
-                <img src={item.thumbnailUrl} alt={item.title} />
+                <img src={item.thumbnailUrl} alt={item.title || 'Project'} />
               </div>
             )}
 
@@ -59,28 +59,40 @@ const ProjectDetailModal = ({ item, isOpen, onClose }) => {
                     Featured
                   </span>
                 )}
+                {item.category === 'Internships' && item.currentlyWorking && (
+                  <span className={styles.workingBadge}>
+                    <span className={styles.workingDot} />
+                    Currently Working
+                  </span>
+                )}
               </div>
 
-              <h2 className={styles.title}>{item.title}</h2>
+              {item.title && <h2 className={styles.title}>{item.title}</h2>}
 
-              <div className={styles.section}>
-                <h3 className={styles.sectionLabel}>Overview</h3>
-                <p className={styles.sectionText}>{item.description}</p>
-              </div>
-
-              <div className={styles.section}>
-                <h3 className={styles.sectionLabel}>Skills Used</h3>
-                <div className={styles.skills}>
-                  {item.skills.map((skill) => (
-                    <span key={skill} className={styles.skillTag}>{skill}</span>
-                  ))}
+              {item.description && (
+                <div className={styles.section}>
+                  <h3 className={styles.sectionLabel}>Overview</h3>
+                  <p className={styles.sectionText}>{item.description}</p>
                 </div>
-              </div>
+              )}
 
-              <div className={styles.section}>
-                <h3 className={styles.sectionLabel}>What I Learned</h3>
-                <p className={styles.sectionText}>{item.whatILearned}</p>
-              </div>
+              {item.skills?.length > 0 && (
+                <div className={styles.section}>
+                  <h3 className={styles.sectionLabel}>Skills Used</h3>
+                  <div className={styles.skills}>
+                    {item.skills.map((skill) => (
+                      <span key={skill} className={styles.skillTag}>{skill}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {item.whatILearned && (
+                <div className={styles.section}>
+                  <h3 className={styles.sectionLabel}>What I Learned</h3>
+                  <p className={styles.sectionText}>{item.whatILearned}</p>
+                </div>
+              )}
 
               {item.mediaUrls?.length > 0 && (
                 <div className={styles.section}>
