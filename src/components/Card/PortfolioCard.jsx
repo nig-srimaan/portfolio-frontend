@@ -51,11 +51,11 @@ const PortfolioCard = ({ item, onLike, onDelete, onOpenDetail, isAdmin, index })
     >
       <div className={styles.thumbnail} style={{ background: gradient }}>
         {item.thumbnailUrl ? (
-          <img src={item.thumbnailUrl} alt={item.title} className={styles.thumbImg} />
+          <img src={item.thumbnailUrl} alt={item.title || 'Project'} className={styles.thumbImg} />
         ) : (
           <div className={styles.thumbPlaceholder}>
             <div className={styles.thumbGrid} />
-            <span className={styles.thumbInitial}>{item.title.charAt(0)}</span>
+            <span className={styles.thumbInitial}>{(item.title || '?').charAt(0)}</span>
           </div>
         )}
         <div className={styles.categoryBadge} style={{ background: colors.bg, border: `1px solid ${colors.border}`, color: colors.text }}>
@@ -69,20 +69,28 @@ const PortfolioCard = ({ item, onLike, onDelete, onOpenDetail, isAdmin, index })
             Featured
           </div>
         )}
+        {item.category === 'Internships' && item.currentlyWorking && (
+          <div className={styles.workingBadge}>
+            <span className={styles.workingDot} />
+            Currently Working
+          </div>
+        )}
       </div>
 
       <div className={styles.body}>
-        <h3 className={styles.title}>{item.title}</h3>
-        <p className={styles.description}>{item.description}</p>
+        {item.title && <h3 className={styles.title}>{item.title}</h3>}
+        {item.description && <p className={styles.description}>{item.description}</p>}
 
-        <div className={styles.skills}>
-          {item.skills.slice(0, 4).map((skill) => (
-            <span key={skill} className={styles.skillTag}>{skill}</span>
-          ))}
-          {item.skills.length > 4 && (
-            <span className={styles.skillMore}>+{item.skills.length - 4}</span>
-          )}
-        </div>
+        {item.skills?.length > 0 && (
+          <div className={styles.skills}>
+            {item.skills.slice(0, 4).map((skill) => (
+              <span key={skill} className={styles.skillTag}>{skill}</span>
+            ))}
+            {item.skills.length > 4 && (
+              <span className={styles.skillMore}>+{item.skills.length - 4}</span>
+            )}
+          </div>
+        )}
       </div>
 
       <div className={styles.footer}>
