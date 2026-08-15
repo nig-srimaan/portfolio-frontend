@@ -16,6 +16,9 @@ const initialState = {
   githubLink: '',
   featured: false,
   currentlyWorking: false,
+  startDate: '',
+  endDate: '',
+  present: false,
 };
 
 const UploadForm = ({ onSuccess }) => {
@@ -108,13 +111,7 @@ const UploadForm = ({ onSuccess }) => {
       <div className={styles.row}>
         <div className={styles.field}>
           <label className={styles.label}>Title</label>
-          <input
-            name="title"
-            value={form.title}
-            onChange={handleChange}
-            placeholder="e.g. Real-time Chat App"
-            className={styles.input}
-          />
+          <input name="title" value={form.title} onChange={handleChange} placeholder="e.g. Real-time Chat App" className={styles.input} />
         </div>
         <div className={styles.field}>
           <label className={styles.label}>Category</label>
@@ -128,79 +125,53 @@ const UploadForm = ({ onSuccess }) => {
         <div className={styles.field}>
           <label className={styles.label}>Currently Working Here?</label>
           <div className={styles.toggleRow}>
-            <button
-              type="button"
-              className={`${styles.toggleBtn} ${form.currentlyWorking ? styles.toggleActive : ''}`}
-              onClick={() => setForm((p) => ({ ...p, currentlyWorking: true }))}
-            >
-              Yes
-            </button>
-            <button
-              type="button"
-              className={`${styles.toggleBtn} ${!form.currentlyWorking ? styles.toggleActive : ''}`}
-              onClick={() => setForm((p) => ({ ...p, currentlyWorking: false }))}
-            >
-              No
-            </button>
+            <button type="button" className={`${styles.toggleBtn} ${form.currentlyWorking ? styles.toggleActive : ''}`} onClick={() => setForm((p) => ({ ...p, currentlyWorking: true }))}>Yes</button>
+            <button type="button" className={`${styles.toggleBtn} ${!form.currentlyWorking ? styles.toggleActive : ''}`} onClick={() => setForm((p) => ({ ...p, currentlyWorking: false }))}>No</button>
           </div>
         </div>
       )}
 
+      <div className={styles.dateSection}>
+        <p className={styles.dateSectionLabel}>Duration</p>
+        <div className={styles.row}>
+          <div className={styles.field}>
+            <label className={styles.label}>Start Date</label>
+            <input name="startDate" type="month" value={form.startDate} onChange={handleChange} className={styles.input} />
+          </div>
+          <div className={styles.field}>
+            <label className={styles.label}>End Date</label>
+            <input name="endDate" type="month" value={form.endDate} onChange={handleChange} className={styles.input} disabled={form.present} />
+          </div>
+        </div>
+        <label className={styles.checkRow}>
+          <input type="checkbox" name="present" checked={form.present} onChange={handleChange} className={styles.checkbox} />
+          <span className={styles.checkLabel}>Present / Ongoing</span>
+        </label>
+      </div>
+
       <div className={styles.field}>
         <label className={styles.label}>Description</label>
-        <textarea
-          name="description"
-          value={form.description}
-          onChange={handleChange}
-          placeholder="Describe the project, its purpose, and key outcomes..."
-          className={styles.textarea}
-          rows={3}
-        />
+        <textarea name="description" value={form.description} onChange={handleChange} placeholder="Describe the project, its purpose, and key outcomes..." className={styles.textarea} rows={3} />
       </div>
 
       <div className={styles.field}>
         <label className={styles.label}>Skills Used</label>
-        <input
-          name="skills"
-          value={form.skills}
-          onChange={handleChange}
-          placeholder="React, Node.js, MongoDB (comma separated)"
-          className={styles.input}
-        />
+        <input name="skills" value={form.skills} onChange={handleChange} placeholder="React, Node.js, MongoDB (comma separated)" className={styles.input} />
       </div>
 
       <div className={styles.field}>
         <label className={styles.label}>What I Learned</label>
-        <textarea
-          name="whatILearned"
-          value={form.whatILearned}
-          onChange={handleChange}
-          placeholder="Key takeaways, new concepts mastered, challenges overcome..."
-          className={styles.textarea}
-          rows={4}
-        />
+        <textarea name="whatILearned" value={form.whatILearned} onChange={handleChange} placeholder="Key takeaways, new concepts mastered, challenges overcome..." className={styles.textarea} rows={4} />
       </div>
 
       <div className={styles.row}>
         <div className={styles.field}>
           <label className={styles.label}>GitHub Link</label>
-          <input
-            name="githubLink"
-            value={form.githubLink}
-            onChange={handleChange}
-            placeholder="https://github.com/..."
-            className={styles.input}
-          />
+          <input name="githubLink" value={form.githubLink} onChange={handleChange} placeholder="https://github.com/..." className={styles.input} />
         </div>
         <div className={styles.field}>
           <label className={styles.label}>External Link</label>
-          <input
-            name="externalLink"
-            value={form.externalLink}
-            onChange={handleChange}
-            placeholder="https://..."
-            className={styles.input}
-          />
+          <input name="externalLink" value={form.externalLink} onChange={handleChange} placeholder="https://..." className={styles.input} />
         </div>
       </div>
 
@@ -220,9 +191,7 @@ const UploadForm = ({ onSuccess }) => {
       </label>
 
       <button type="submit" className={styles.submitBtn} disabled={submitting}>
-        {submitting ? (
-          <span className={styles.spinner} />
-        ) : (
+        {submitting ? <span className={styles.spinner} /> : (
           <>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
               <line x1="12" y1="5" x2="12" y2="19" />
