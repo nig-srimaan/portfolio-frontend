@@ -17,6 +17,9 @@ const EditItemModal = ({ item, isOpen, onClose, onSuccess }) => {
     githubLink: '',
     featured: false,
     currentlyWorking: false,
+    startDate: '',
+    endDate: '',
+    present: false,
   });
   const [thumbnail, setThumbnail] = useState(null);
   const [thumbPreview, setThumbPreview] = useState(null);
@@ -38,6 +41,9 @@ const EditItemModal = ({ item, isOpen, onClose, onSuccess }) => {
         githubLink: item.githubLink || '',
         featured: item.featured || false,
         currentlyWorking: item.currentlyWorking || false,
+        startDate: item.startDate || '',
+        endDate: item.endDate || '',
+        present: item.present || false,
       });
       setThumbPreview(item.thumbnailUrl || null);
       setExistingMedia(item.mediaUrls || []);
@@ -160,23 +166,29 @@ const EditItemModal = ({ item, isOpen, onClose, onSuccess }) => {
                 <div className={styles.field}>
                   <label className={styles.label}>Currently Working Here?</label>
                   <div className={styles.toggleRow}>
-                    <button
-                      type="button"
-                      className={`${styles.toggleBtn} ${form.currentlyWorking ? styles.toggleActive : ''}`}
-                      onClick={() => setForm((p) => ({ ...p, currentlyWorking: true }))}
-                    >
-                      Yes
-                    </button>
-                    <button
-                      type="button"
-                      className={`${styles.toggleBtn} ${!form.currentlyWorking ? styles.toggleActive : ''}`}
-                      onClick={() => setForm((p) => ({ ...p, currentlyWorking: false }))}
-                    >
-                      No
-                    </button>
+                    <button type="button" className={`${styles.toggleBtn} ${form.currentlyWorking ? styles.toggleActive : ''}`} onClick={() => setForm((p) => ({ ...p, currentlyWorking: true }))}>Yes</button>
+                    <button type="button" className={`${styles.toggleBtn} ${!form.currentlyWorking ? styles.toggleActive : ''}`} onClick={() => setForm((p) => ({ ...p, currentlyWorking: false }))}>No</button>
                   </div>
                 </div>
               )}
+
+              <div className={styles.dateSection}>
+                <p className={styles.dateSectionLabel}>Duration</p>
+                <div className={styles.row}>
+                  <div className={styles.field}>
+                    <label className={styles.label}>Start Date</label>
+                    <input name="startDate" type="month" value={form.startDate} onChange={handleChange} className={styles.input} />
+                  </div>
+                  <div className={styles.field}>
+                    <label className={styles.label}>End Date</label>
+                    <input name="endDate" type="month" value={form.endDate} onChange={handleChange} className={styles.input} disabled={form.present} />
+                  </div>
+                </div>
+                <label className={styles.checkRow}>
+                  <input type="checkbox" name="present" checked={form.present} onChange={handleChange} className={styles.checkbox} />
+                  <span className={styles.checkLabel}>Present / Ongoing</span>
+                </label>
+              </div>
 
               <div className={styles.field}>
                 <label className={styles.label}>Description</label>
@@ -221,11 +233,7 @@ const EditItemModal = ({ item, isOpen, onClose, onSuccess }) => {
                           </div>
                           <span className={styles.existingFileName}>{originalName}</span>
                           <span className={styles.existingFileExt}>{ext}</span>
-                          <button
-                            type="button"
-                            className={styles.removeFileBtn}
-                            onClick={() => removeExistingMedia(entry)}
-                          >
+                          <button type="button" className={styles.removeFileBtn} onClick={() => removeExistingMedia(entry)}>
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                               <line x1="18" y1="6" x2="6" y2="18" />
                               <line x1="6" y1="6" x2="18" y2="18" />
