@@ -9,6 +9,13 @@ const categoryColors = {
   Certifications: { bg: 'rgba(245, 158, 11, 0.1)', border: 'rgba(245, 158, 11, 0.25)', text: '#f59e0b' },
 };
 
+const formatDate = (dateStr) => {
+  if (!dateStr) return '';
+  const [year, month] = dateStr.split('-');
+  const date = new Date(year, parseInt(month) - 1);
+  return date.toLocaleString('default', { month: 'short', year: 'numeric' });
+};
+
 const ProjectDetailModal = ({ item, isOpen, onClose }) => {
   const [copied, setCopied] = useState(false);
   if (!item) return null;
@@ -21,6 +28,16 @@ const ProjectDetailModal = ({ item, isOpen, onClose }) => {
     toast.success('Link copied!');
     setTimeout(() => setCopied(false), 2000);
   };
+
+  const dateLabel = (() => {
+    if (!item.startDate && !item.endDate && !item.present) return null;
+    const start = formatDate(item.startDate);
+    const end = item.present ? 'Present' : formatDate(item.endDate);
+    if (start && end) return `${start} — ${end}`;
+    if (start) return `From ${start}`;
+    if (end) return end;
+    return null;
+  })();
 
   return (
     <AnimatePresence>
@@ -95,6 +112,18 @@ const ProjectDetailModal = ({ item, isOpen, onClose }) => {
               </div>
 
               {item.title && <h2 className={styles.title}>{item.title}</h2>}
+
+              {dateLabel && (
+                <div className={styles.dateBadge}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" />
+                  </svg>
+                  {dateLabel}
+                </div>
+              )}
 
               {item.description && (
                 <div className={styles.section}>
